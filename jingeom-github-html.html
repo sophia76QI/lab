@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>진검이 🧪 - 진단검사의학과 안내</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ffa726);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1.5" fill="rgba(255,255,255,0.08)"/><circle cx="50" cy="80" r="1" fill="rgba(255,255,255,0.06)"/></pattern></defs><rect width="1000" height="1000" fill="url(%23grain)"/></svg>');
+            animation: float 20s infinite linear;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0% { transform: rotate(0deg) translateX(0px); }
+            100% { transform: rotate(360deg) translateX(0px); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .mascot {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+            position: relative;
+        }
+
+        .mascot::before {
+            content: '👨‍⚕️';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            animation: wave 1.5s infinite;
+        }
+
+        .mascot::after {
+            content: '💙';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: translateX(-50%) rotate(0deg); }
+            25% { transform: translateX(-50%) rotate(15deg); }
+            75% { transform: translateX(-50%) rotate(-15deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        .title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .search-container {
+            padding: 30px;
+            background: white;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 20px 60px 20px 25px;
+            border: 3px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            font-weight: 500;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            background: white;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff6b6b;
+            font-size: 1.5rem;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .department-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .department-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .department-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #ffa726, #66bb6a, #42a5f5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .department-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .department-card:hover::before {
+            opacity: 1;
+        }
+
+        .department-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .department-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .department-phone {
+            background: linear-gradient(135deg, #ff6b6b, #ffa726);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+        }
+
+        .department-phone i {
+            margin-right: 5px;
+        }
+
+        .department-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-right: 15px;
+        }
+
+        .chemistry { background: linear-gradient(135deg, #ff6b6b, #ff8a80); }
+        .hematology { background: linear-gradient(135deg, #e91e63, #f48fb1); }
+        .immunology { background: linear-gradient(135deg, #9c27b0, #ce93d8); }
+        .bloodbank { background: linear-gradient(135deg, #f44336, #ef5350); }
+        .molecular { background: linear-gradient(135deg, #3f51b5, #7986cb); }
+        .microbiology { background: linear-gradient(135deg, #4caf50, #81c784); }
+
+        .department-name {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .test-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ff6b6b;
+            transition: all 0.3s ease;
+        }
+
+        .test-item:hover {
+            background: #e3f2fd;
+            border-left-color: #2196f3;
+            transform: translateX(5px);
+        }
+
+        .test-name {
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            line-height: 1.4;
+        }
+
+        .test-timing {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .contact-info i {
+            margin-right: 5px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            margin-bottom: 25px;
+            color: #ccc;
+        }
+
+        .quick-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .quick-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .quick-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .footer {
+            background: #f8f9fa;
+            text-align: center;
+            padding: 25px;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 16px;
+            }
+            
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .department-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .mascot {
+                font-size: 4rem;
+            }
+            
+            .search-input {
+                font-size: 1.1rem;
+                padding: 16px 50px 16px 20px;
+            }
+            
+            .department-name {
+                font-size: 1.3rem;
+            }
+            
+            .test-name {
+                font-size: 1.1rem;
+            }
+            
+            .test-timing {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <div class="mascot">🧪</div>
+                <div class="title">진검이</div>
+                <div class="subtitle">진단검사의학과 친절한 안내 도우미</div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="검사 종목이나 부서명을 검색해보세요! (예: CBC, 혈당, TFT)" id="searchInput">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            <div class="quick-buttons">
+                <button class="quick-btn" onclick="filterTests('응급')">응급검사</button>
+                <button class="quick-btn" onclick="filterTests('24시간')">24시간</button>
+                <button class="quick-btn" onclick="filterTests('PCR')">PCR검사</button>
+                <button class="quick-btn" onclick="filterTests('배양')">배양검사</button>
+                <button class="quick-btn" onclick="showAll()">전체보기</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="department-grid" id="departmentGrid">
+                <!-- 일반화학 -->
+                <div class="department-card" data-department="일반화학" data-tests="kidney battery 화학검사">
+                    <div class="department-header">
+                        <div class="department-info">
+                            <div class="department-icon chemistry">
+                                <i class="fas fa-flask"></i>
+                            </div>
+                            <div class="department-name">일반화학 (TLA)</div>
+                        </div>
+                        <div class="department-phone">
+                            <i class="fas fa-phone"></i> 5259
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">🩸 Kidney battery15,16종 외 화학검사</div>
+                        <div class="test-timing">
+                            <i class="fas fa-clock"></i> <strong>응급:</strong> 1시간<br>
+                            <i class="fas fa-hospital"></i> <strong>외래+병동:</strong> 3시간
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 일반혈액 -->
+                <div class="department-card" data-department="일반혈액" data-tests="cbc reti pt aptt fibrinogen d-dimer hba1c">
+                    <div class="department-header">
+                        <div class="department-info">
+                            <div class="department-icon hematology">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            <div class="department-name">일반혈액</div>
+                        </div>
+                        <div class="department-phone">
+                            <i class="fas fa-phone"></i> 5257
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">🔴 CBC6종+reti</div>
+                        <div class="test-timing">
+                            <i class="fas fa-clock"></i> <strong>응급,외래,병동:</strong> 30분
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">🩸 PT,APTT Fibrinogen D-dimer</div>
+                        <div class="test-timing">
+                            <i class="fas fa-clock"></i> <strong>응급,외래,병동:</strong> 1시간
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">🍯 HbA1c</div>
+                        <div class="test-timing">
+                            <i class="fas fa-calendar"></i> <strong>월,화,수,목,금:</strong><br>
+                            1차보고-오전10시접수기준<br>
+                            2차보고-오후3시 접수 기준
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 진단면역 -->
+                <div class="department-card" data-department="진단면역" data-tests="tft c-peptide 간염바이러스 hiv 면역검사">
+                    <div class="department-header">
+                        <div class="department-info">
+                            <div class="department-icon immunology">
+                                <i class="fas fa-shield-virus"></i>
+                            </div>
+                            <div class="department-name">진단면역 (TLA2)</div>
+                        </div>
+                        <div class="department-phone">
+                            <i class="fas fa-phone"></i> 5258
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">🛡️ TFT,C-peptide,간염바이러스 HIV외 면역검사</div>
+                        <div class="test-timing">
+                            <i class="fas fa-clock"></i> <strong>1차보고:</strong> 오전11시(9시채혈,10시접수)<br>
+                            <i class="fas fa-clock"></i> <strong>2차보고:</strong> 오후2시(1차보고 이후 1시접수)<br>
+                            <i class="fas fa-times-circle"></i> <strong>오후4시 검사마감</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 혈액은행 -->
+                <div class="department-card" data-department="혈액은행" data-tests="abo rh typing crossmatching irregular coombs du test">
+                    <div class="department-header">
+                        <div class="department-info">
+                            <div class="department-icon bloodbank">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div class="department-name">혈액은행</div>
+                        </div>
+                        <div class="department-phone">
+                            <i class="fas fa-phone"></i> 5260
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">🅰️🅱️ ABO & Rh Typing(검사용)crosmatching, Irregular Ab(Screening Test) Du test</div>
+                        <div class="test-timing">
+                            <i class="fas fa-clock"></i> <strong>24시간 운영</strong>
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">🧪 Coombs Test(direct). Coombs Test(Indirect)</div>
+                        <div class="test-timing">
+                            <i class="fas fa-calendar"></i> <strong>평일 오전9시~오후6시 검사진행</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 분자유전 -->
+                <div class="department-card" data-department="분자유전" data-tests="pcr 호흡기바이러스 폐렴 std hbv dna tbc 코로나 covid mtb difficile carbapenemase">
+                    <div class="department-header">
+                        <div class="department-info">
+                            <div class="department-icon molecular">
+                                <i class="fas fa-dna"></i>
+                            </div>
+                            <div class="department-name">분자유전</div>
+                        </div>
+                        <div class="department-phone">
+                            <i class="fas fa-phone"></i> 5262
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">🫁 호흡기바이러스 18종 폐렴PCR(7종)</div>
+                        <div class="test-timing">
+                            <i class="fas fa-calendar"></i> <strong>월~금 검사진행</strong> 오전9시 접수분까지 당일 오후2시보고
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">💕 STD 12종(Real Time PCR)</div>
+                        <div class="test-timing">
+                            <i class="fas fa-calendar"></i> <strong>수,금 검사진행</strong><br>
+                            검사 당일 오전9시 접수분까지 당일 보고
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">🟡 HBV DNA real-time PCR 정량</div>
+                        <div class="test-timing">
+                            <i class="fas fa-calendar"></i> <strong>화,목 검사진행</strong><br>
+                            검사 당일 오전9시 접수분까지 당일 보고
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">🦠 TBC DNA PCR</div>
+                        <div class="test-timing">
+                            <i class="fas fa-calendar"></i> <strong>화,목 검사진행</strong><br>
+                            검사 당일 오후 1시 접수분까지 검사 진행 후 수,금 오전 결과 보고
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">😷 신속코로나PCR, 신종코로나 PCR, Influenza A&B/RSV/COVID-19 동시 PCR</div>
+                        <div class="test-timing">
+                            <i class="fas fa-clock"></i> <strong>1시간 이후 결과보고</strong><br>
+                            <i class="fas fa-clock"></i> <strong>24시간 운영</strong>
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">⚠️ C.Difficile toxin gene Carbapenemase gene PCR MTB/RIF-R</div>
+                        <div class="test-timing">
+                            <i class="fas fa-clock"></i> <strong>오후 3시 접수분까지 당일보고</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 임상미생물 -->
+                <div class="department-card" data-department="임상미생물" data-tests="culture sensitivity blood culture ifn 배양">
+                    <div class="department-header">
+                        <div class="department-info">
+                            <div class="department-icon microbiology">
+                                <i class="fas fa-microscope"></i>
+                            </div>
+                            <div class="department-name">임상미생물</div>
+                        </div>
+                        <div class="department-phone">
+                            <i class="fas fa-phone"></i> 5263
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">🧫 Culture& sensitivity</div>
+                        <div class="test-timing">
+                            <i class="fas fa-calendar"></i> <strong>월~금:</strong> 오후 4시 30분 접수분까지 배양<br>
+                            <i class="fas fa-calendar"></i> <strong>토요일:</strong> 오전 9시 접수분까지 배양
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">🔬 IFN-r Plus</div>
+                        <div class="test-timing">
+                            <i class="fas fa-calendar"></i> <strong>금요일,공휴일 전날 오후2시까지 접수마감</strong>
+                        </div>
+                    </div>
+                    <div class="test-item">
+                        <div class="test-name">🩸 Blood Culture & Sensitivity</div>
+                        <div class="test-timing">
+                            <i class="fas fa-clock"></i> <strong>No growth-장비 들어간 시간부터 2day 중간보고/ 5day 최종보고</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="no-results hidden" id="noResults">
+                <i class="fas fa-search"></i>
+                <div>검색 결과가 없습니다</div>
+                <div style="font-size: 1.1rem; margin-top: 10px; font-weight: 400;">다른 검색어로 시도해보세요</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div style="font-size: 1.2rem;">💙 진검이와 함께하는 쉽고 빠른 검사 안내 💙</div>
+            <div style="font-size: 1rem; margin-top: 8px; opacity: 0.8; font-weight: 400;">궁금한 점이 있으시면 해당 부서로 연락주세요!</div>
+        </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const departmentGrid = document.getElementById('departmentGrid');
+        const noResults = document.getElementById('noResults');
+        const departmentCards = document.querySelectorAll('.department-card');
+
+        function filterTests(keyword) {
+            let hasResults = false;
+            
+            departmentCards.forEach(card => {
+                const shouldShow = card.textContent.toLowerCase().includes(keyword.toLowerCase());
+                
+                if (shouldShow) {
+                    card.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (hasResults) {
+                departmentGrid.style.display = 'grid';
+                noResults.classList.add('hidden');
+            } else {
+                departmentGrid.style.display = 'none';
+                noResults.classList.remove('hidden');
+            }
+
+            searchInput.value = keyword;
+        }
+
+        function showAll() {
+            departmentCards.forEach(card => {
+                card.style.display = 'block';
+            });
+            departmentGrid.style.display = 'grid';
+            noResults.classList.add('hidden');
+            searchInput.value = '';
+        }
+
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            
+            if (query === '') {
+                showAll();
+                return;
+            }
+
+            let hasResults = false;
+            
+            departmentCards.forEach(card => {
+                const cardText = card.textContent.toLowerCase();
+                const departmentData = card.getAttribute('data-department').toLowerCase();
+                const testsData = card.getAttribute('data-tests').toLowerCase();
+                
+                const shouldShow = cardText.includes(query) || 
+                                 departmentData.includes(query) || 
+                                 testsData.includes(query);
+                
+                if (shouldShow) {
+                    card.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (hasResults) {
+                departmentGrid.style.display = 'grid';
+                noResults.classList.add('hidden');
+            } else {
+                departmentGrid.style.display = 'none';
+                noResults.classList.remove('hidden');
+            }
+        });
+
+        // 초기 로드 시 모든 카드 표시
+        showAll();
+    </script>
+</body>
+</html>
